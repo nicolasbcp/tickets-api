@@ -30,6 +30,20 @@ namespace Tickets_API.Controllers
             Response.StatusCode = StatusCodes.Status200OK;
             return ResponseUtils.GenerateObjectResult("Casa de Show encontrada!", casadeshow);
         }
+
+        [HttpGet]
+        [Route("v1/casasdeshow/{nome}")]
+        public ObjectResult GetNome(string nome) {
+            var casadeshow = _casaDeShowRepository.BuscarNome(nome);
+
+            if (casadeshow == null) {
+                Response.StatusCode = StatusCodes.Status404NotFound;
+                return ResponseUtils.GenerateObjectResult("Casa de Show não encontrada!");
+            }
+            Response.StatusCode = StatusCodes.Status200OK;
+            return ResponseUtils.GenerateObjectResult("Casa de Show encontrada!", casadeshow);
+        }
+
         [HttpGet]
         [Route("v1/casasdeshow")]
         public ObjectResult Get() {
@@ -41,6 +55,32 @@ namespace Tickets_API.Controllers
             }
             Response.StatusCode = StatusCodes.Status200OK;
             return ResponseUtils.GenerateObjectResult("Listagem de casas de show!", casadeshow);
+        }
+
+        [HttpGet]
+        [Route("v1/casasdeshow/asc")]
+        public ObjectResult GetAsc() {
+            var casadeshow = _casaDeShowRepository.Listar();
+
+            if(!casadeshow.Any()){
+                Response.StatusCode = StatusCodes.Status404NotFound;
+                return ResponseUtils.GenerateObjectResult("Nenhuma casa de show encontrada.", casadeshow);
+            }
+            Response.StatusCode = StatusCodes.Status200OK;
+            return ResponseUtils.GenerateObjectResult("Listagem de casas de show!", casadeshow.OrderBy(s => s.Nome));
+        }
+
+        [HttpGet]
+        [Route("v1/casasdeshow/desc")]
+        public ObjectResult GetDesc() {
+            var casadeshow = _casaDeShowRepository.Listar();
+
+            if(!casadeshow.Any()){
+                Response.StatusCode = StatusCodes.Status404NotFound;
+                return ResponseUtils.GenerateObjectResult("Nenhuma casa de show encontrada.", casadeshow);
+            }
+            Response.StatusCode = StatusCodes.Status200OK;
+            return ResponseUtils.GenerateObjectResult("Listagem de casas de show!", casadeshow.OrderByDescending(s => s.Nome));
         }
 
         [HttpPost]

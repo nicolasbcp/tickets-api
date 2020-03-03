@@ -61,6 +61,118 @@ namespace Tickets_API.Controllers
             return ResponseUtils.GenerateObjectResult("Listagem de Eventos!", eventos);
         }
         
+        [HttpGet]
+        [Route("v1/eventos/capacidade/asc")]
+        public ObjectResult GetCapacidadeAsc() {
+            var eventos = _eventoRepository.Listar();
+
+            if(!eventos.Any()){
+                Response.StatusCode = StatusCodes.Status404NotFound;
+                return ResponseUtils.GenerateObjectResult("Nenhum evento encontrado.", eventos);
+            }
+
+            Response.StatusCode = StatusCodes.Status200OK;
+            return ResponseUtils.GenerateObjectResult("Listagem de Eventos!", eventos.OrderBy(s => s.Capacidade));
+        }
+
+        [HttpGet]
+        [Route("v1/eventos/capacidade/desc")]
+        public ObjectResult GetCapacidadeDesc() {
+            var eventos = _eventoRepository.Listar();
+
+            if(!eventos.Any()){
+                Response.StatusCode = StatusCodes.Status404NotFound;
+                return ResponseUtils.GenerateObjectResult("Nenhum evento encontrado.", eventos);
+            }
+
+            Response.StatusCode = StatusCodes.Status200OK;
+            return ResponseUtils.GenerateObjectResult("Listagem de Eventos!", eventos.OrderByDescending(s => s.Capacidade));
+        }
+
+        [HttpGet]
+        [Route("v1/eventos/data/asc")]
+        public ObjectResult GetDataAsc() {
+            var eventos = _eventoRepository.Listar();
+
+            if(!eventos.Any()){
+                Response.StatusCode = StatusCodes.Status404NotFound;
+                return ResponseUtils.GenerateObjectResult("Nenhum evento encontrado.", eventos);
+            }
+
+            Response.StatusCode = StatusCodes.Status200OK;
+            return ResponseUtils.GenerateObjectResult("Listagem de Eventos!", eventos.OrderBy(s => s.Data));
+        }
+
+        [HttpGet]
+        [Route("v1/eventos/data/desc")]
+        public ObjectResult GetDataDesc() {
+            var eventos = _eventoRepository.Listar();
+
+            if(!eventos.Any()){
+                Response.StatusCode = StatusCodes.Status404NotFound;
+                return ResponseUtils.GenerateObjectResult("Nenhum evento encontrado.", eventos);
+            }
+
+            Response.StatusCode = StatusCodes.Status200OK;
+            return ResponseUtils.GenerateObjectResult("Listagem de Eventos!", eventos.OrderByDescending(s => s.Data));
+        }
+
+        [HttpGet]
+        [Route("v1/eventos/nome/asc")]
+        public ObjectResult GetNomeAsc() {
+            var eventos = _eventoRepository.Listar();
+
+            if(!eventos.Any()){
+                Response.StatusCode = StatusCodes.Status404NotFound;
+                return ResponseUtils.GenerateObjectResult("Nenhum evento encontrado.", eventos);
+            }
+
+            Response.StatusCode = StatusCodes.Status200OK;
+            return ResponseUtils.GenerateObjectResult("Listagem de Eventos!", eventos.OrderBy(s => s.Nome));
+        }
+
+        [HttpGet]
+        [Route("v1/eventos/nome/desc")]
+        public ObjectResult GetNomeDesc() {
+            var eventos = _eventoRepository.Listar();
+
+            if(!eventos.Any()){
+                Response.StatusCode = StatusCodes.Status404NotFound;
+                return ResponseUtils.GenerateObjectResult("Nenhum evento encontrado.", eventos);
+            }
+
+            Response.StatusCode = StatusCodes.Status200OK;
+            return ResponseUtils.GenerateObjectResult("Listagem de Eventos!", eventos.OrderByDescending(s => s.Nome));
+        }
+
+        [HttpGet]
+        [Route("v1/eventos/valorunitario/asc")]
+        public ObjectResult GetValorAsc() {
+            var eventos = _eventoRepository.Listar();
+
+            if(!eventos.Any()){
+                Response.StatusCode = StatusCodes.Status404NotFound;
+                return ResponseUtils.GenerateObjectResult("Nenhum evento encontrado.", eventos);
+            }
+
+            Response.StatusCode = StatusCodes.Status200OK;
+            return ResponseUtils.GenerateObjectResult("Listagem de Eventos!", eventos.OrderBy(s => s.ValorUnitario));
+        }
+
+        [HttpGet]
+        [Route("v1/eventos/valorunitario/desc")]
+        public ObjectResult GetValorDesc() {
+            var eventos = _eventoRepository.Listar();
+
+            if(!eventos.Any()){
+                Response.StatusCode = StatusCodes.Status404NotFound;
+                return ResponseUtils.GenerateObjectResult("Nenhum evento encontrado.", eventos);
+            }
+
+            Response.StatusCode = StatusCodes.Status200OK;
+            return ResponseUtils.GenerateObjectResult("Listagem de Eventos!", eventos.OrderByDescending(s => s.ValorUnitario));
+        }        
+
         [HttpPost]
         [Route("v1/eventos/")]
         public ObjectResult Post([FromBody] EventoCadastroViewModel eventoTemp) {

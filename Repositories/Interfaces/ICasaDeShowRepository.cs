@@ -7,6 +7,7 @@ namespace Tickets_API.Repositories.Interfaces
     public interface ICasaDeShowRepository
     {
         CasaDeShow Buscar(int id);
+        CasaDeShow BuscarNome(string nome);
 
         void Remover(CasaDeShow obj);
 

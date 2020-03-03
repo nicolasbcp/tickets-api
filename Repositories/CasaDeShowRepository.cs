@@ -46,6 +46,11 @@ namespace Tickets_API.Repositories
             return _dbContext.Set<CasaDeShow>().FirstOrDefault(x => x.Id == id);
         }
 
+        public CasaDeShow BuscarNome(string nome)
+        {
+            return _dbContext.Set<CasaDeShow>().FirstOrDefault(x => x.Nome == nome);
+        }
+
         public IEnumerable<CasaDeShowListagemViewModel> Listar()
         {
             return _dbContext.Set<CasaDeShow>().Select(x => new CasaDeShowListagemViewModel() { Id = x.Id, Nome = x.Nome }).ToList();
