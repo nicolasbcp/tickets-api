@@ -23,7 +23,6 @@ namespace Tickets_API.Controllers
                 _casaDeShowRepository = casaDeShowRepository;
                 _generoMusicalRepository = generoMusicalRepository;
         }
-        
 
         [HttpGet]
         [Route("v1/eventos/{id}")]
