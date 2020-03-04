@@ -53,7 +53,7 @@ namespace Tickets_API.Repositories
 
         public IEnumerable<CasaDeShowListagemViewModel> Listar()
         {
-            return _dbContext.Set<CasaDeShow>().Select(x => new CasaDeShowListagemViewModel() { Id = x.Id, Nome = x.Nome }).ToList();
+            return _dbContext.Set<CasaDeShow>().Select(x => new CasaDeShowListagemViewModel() { Id = x.Id, Nome = x.Nome, Endereco = x.Endereco }).ToList();
         }
     }
 }

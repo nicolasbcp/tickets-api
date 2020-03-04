@@ -55,7 +55,9 @@ namespace Tickets_API.Repositories
                 Data = x.Data,
                 ValorUnitario = x.ValorUnitario,
                 CasaDeShowID = x.CasaDeShowID,
-                GeneroMusicalID = x.GeneroMusicalID
+                CasaDeShow = x.CasaDeShow.Nome,
+                GeneroMusicalID = x.GeneroMusicalID,
+                GeneroMusical = x.GeneroMusical.Nome
                 }).ToList();
         }
     }

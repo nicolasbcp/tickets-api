@@ -19,7 +19,10 @@ namespace Tickets_API.Models.ViewModels.EventoViewModels
         public float ValorUnitario {get; set;}
         [Required(ErrorMessage="Não possível cadastrar evento, pois não existem casas de show.")]
         public int CasaDeShowID {get; set;}
+        public string CasaDeShow {get; set;}
         [Required(ErrorMessage="Este campo é obrigatório.")]
         public int GeneroMusicalID {get; set;}
+        public string GeneroMusical {get; set;}
+
     }
 }
