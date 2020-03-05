@@ -9,12 +9,21 @@ using Tickets_API.Repositories.Interfaces;
 namespace Tickets_API.Repositories
 {
     public class UsuarioRepository : IUsuarioRepository
-    {
+    {   
         private readonly ApplicationDbContext _dbContext;
 
         public UsuarioRepository(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
+        }
+
+        public static Usuario Get(string email, string senha) {
+            var usuarios = new List<Usuario>();
+            usuarios.Add(new Usuario {Id = 1, Nome = "Administrador", Email = "admin@gft.com", Senha = "admin",
+             Role = "admin"
+            });
+            return usuarios.Where(x => x.Email.ToLower() == email.ToLower() && x.Senha == x.Senha
+            ).FirstOrDefault();
         }
 
         public void Criar(Usuario obj)

@@ -9,5 +9,6 @@ namespace Tickets_API.Models
         public string Email {get; set;}
         [IgnoreDataMember]
         public string Senha {get; set;}
+        public string Role {get; set;}
     }
 }
