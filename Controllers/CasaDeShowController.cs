@@ -26,7 +26,8 @@ namespace Tickets_API.Controllers
         /// </summary>
         /// <returns>Exibe a lista de casas de show cadastradas.</returns>
         /// <response code="200">Listagem de casas de show.</response>  
-        /// <response code="404">Casa de show não encontrada.</response>  
+        /// <response code="404">Casa de show não encontrada.</response> 
+        /// <response code="500">Tipo primitivo não adequado.</response>   
         [HttpGet]
         [Route("v1/casasdeshow")]
         public ObjectResult Get() {
@@ -45,7 +46,8 @@ namespace Tickets_API.Controllers
         /// </summary>
         /// <returns>Exibe a lista de casas de show cadastradas.</returns>
         /// <response code="200">Listagem de casas de show.</response>  
-        /// <response code="404">Não há casas de show cadastradas.</response>  
+        /// <response code="404">Não há casas de show cadastradas.</response>
+        /// <response code="500">Tipo primitivo não adequado.</response>   
         [HttpGet]
         [Route("v1/casasdeshow/asc")]
         public ObjectResult GetAsc() {
@@ -64,7 +66,8 @@ namespace Tickets_API.Controllers
         /// </summary>
         /// <returns>Exibe a lista de casas de show cadastradas.</returns>
         /// <response code="200">Listagem de casas de show.</response>  
-        /// <response code="404">Não há casas de show cadastradas.</response>  
+        /// <response code="404">Não há casas de show cadastradas.</response> 
+        /// <response code="500">Tipo primitivo não adequado.</response>  
         [HttpGet]
         [Route("v1/casasdeshow/desc")]
         public ObjectResult GetDesc() {
@@ -83,7 +86,8 @@ namespace Tickets_API.Controllers
         /// </summary>
         /// <returns>Exibe casa de show específica cadastrada por ID.</returns>
         /// <response code="200">Casa de show encontrada com sucesso.</response>  
-        /// <response code="404">Casa de show não encontrada.</response>  
+        /// <response code="404">Casa de show não encontrada.</response> 
+        /// <response code="500">Tipo primitivo não adequado.</response>  
         [HttpGet]
         [Route("v1/casasdeshow/{id}")]
         public ObjectResult Get(int id) {
@@ -102,7 +106,8 @@ namespace Tickets_API.Controllers
         /// </summary>
         /// <returns>Exibe casa de show específica cadastrada por nome.</returns>
         /// <response code="200">Casa de show encontrada com sucesso.</response>  
-        /// <response code="404">Casa de show não encontrada.</response>  
+        /// <response code="404">Casa de show não encontrada.</response> 
+        /// <response code="500">Tipo primitivo não adequado.</response>  
         [HttpGet]
         [Route("v1/casasdeshow/nome/{nome}")]
         public ObjectResult GetNome(string nome) {
@@ -132,13 +137,20 @@ namespace Tickets_API.Controllers
         /// <returns>Cadastra uma nova casa de show.</returns>
         /// <response code="201">Casa de show criada com sucesso.</response>  
         /// <response code="400">Erro ao cadastrar casa de show.</response>  
+        /// <response code="406">Model inválido.</response>  
         [HttpPost]
         [Produces(MediaTypeNames.Application.Json)]
         [Consumes(MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(ResultViewModel<CasaDeShow>), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ResultViewModel<List<string>>),StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ResultViewModel<List<string>>),StatusCodes.Status406NotAcceptable)]
         [Route("v1/casasdeshow/")]
         public ObjectResult Post([FromBody] CasaDeShowCadastroViewModel casaDeShowTemp) {
+            if (casaDeShowTemp == null) {
+                Response.StatusCode = StatusCodes.Status406NotAcceptable;
+                return ResponseUtils.GenerateObjectResult("Model inválido.", "Campo tipo inteiro");
+            }
+
             if (!ModelState.IsValid) {
                 Response.StatusCode = StatusCodes.Status400BadRequest;
                 return ResponseUtils.GenerateObjectResult("Erro ao cadastrar casa de show.",
@@ -170,13 +182,20 @@ namespace Tickets_API.Controllers
         /// <returns>Edita uma casa de show especificada por ID.</returns>
         /// <response code="200">Casa de show editada com sucesso.</response>
         /// <response code="400">Erro ao editar casa de show.</response>  
+        /// <response code="406">Model inválido.</response>  
         [HttpPut]
         [Produces(MediaTypeNames.Application.Json)]
         [Consumes(MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(ResultViewModel<CasaDeShow>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResultViewModel<List<string>>),StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ResultViewModel<List<string>>),StatusCodes.Status406NotAcceptable)]
         [Route("v1/casasdeshow/{id}")]
         public ObjectResult Put(int id, [FromBody] CasaDeShowEdicaoViewModel casaDeShowTemp) {
+            if (casaDeShowTemp == null) {
+                Response.StatusCode = StatusCodes.Status406NotAcceptable;
+                return ResponseUtils.GenerateObjectResult("Model inválido.", "Campo tipo inteiro");
+            }
+
             if (id != casaDeShowTemp.Id) {
                 ModelState.AddModelError("Id", "Id da requisição difere do Id da casa de show.");
             }
@@ -213,6 +232,7 @@ namespace Tickets_API.Controllers
         /// <returns>Deleta uma casa de show.</returns>
         /// <response code="404">Casa de show não localizada.</response>  
         /// <response code="406">Relação não permitida para exclusão.</response>  
+        /// <response code="500">Tipo primitivo não adequado.</response> 
         [HttpDelete]
         [Route("v1/casasdeshow/{id}")]
         public ObjectResult Delete(int id) {

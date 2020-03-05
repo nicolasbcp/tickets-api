@@ -75,13 +75,19 @@ namespace Tickets_API.Controllers
         /// <returns>Cadastra um novo gênero musical.</returns>
         /// <response code="201">Gênero musical criado com sucesso.</response>  
         /// <response code="400">Erro ao cadastrar gênero musical.</response>  
+        /// <response code="406">Model inválido.</response>  
         [HttpPost]
         [Produces(MediaTypeNames.Application.Json)]
         [Consumes(MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(ResultViewModel<GeneroMusical>), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ResultViewModel<List<string>>),StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ResultViewModel<List<string>>),StatusCodes.Status406NotAcceptable)]
         [Route("v1/generosmusicais/")]
         public ObjectResult Post([FromBody] GeneroMusicalSimplificadoViewModel generoMusicalTemp) {
+            if (generoMusicalTemp == null) {
+                Response.StatusCode = StatusCodes.Status406NotAcceptable;
+                return ResponseUtils.GenerateObjectResult("Model inválido.", "Campo tipo inteiro");
+            }
             if (!ModelState.IsValid) {
                 Response.StatusCode = StatusCodes.Status400BadRequest;
                 return ResponseUtils.GenerateObjectResult("Erro ao cadastrar gênero musical.",
@@ -111,13 +117,19 @@ namespace Tickets_API.Controllers
         /// <returns>Edita um gênero musical especificado por ID.</returns>
         /// <response code="200">Gênero musical editado com sucesso.</response>
         /// <response code="400">Erro ao editar gênero musical.</response>  
+        /// <response code="406">Model inválido.</response> 
         [HttpPut]
         [Produces(MediaTypeNames.Application.Json)]
         [Consumes(MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(ResultViewModel<GeneroMusical>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResultViewModel<List<string>>),StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ResultViewModel<List<string>>),StatusCodes.Status406NotAcceptable)]
         [Route("v1/generosmusicais/{id}")]
         public ObjectResult Put(int id, [FromBody] GeneroMusicalSimplificadoViewModel generoMusicalTemp) {
+            if (generoMusicalTemp == null) {
+                Response.StatusCode = StatusCodes.Status406NotAcceptable;
+                return ResponseUtils.GenerateObjectResult("Model inválido.", "Campo tipo inteiro");
+            }
             if (id != generoMusicalTemp.Id) {
                 ModelState.AddModelError("Id", "Id da requisição difere do Id do gênero musical.");
             }

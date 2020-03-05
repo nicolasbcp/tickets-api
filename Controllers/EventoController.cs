@@ -258,13 +258,19 @@ namespace Tickets_API.Controllers
         /// <returns>Cadastra um novo evento.</returns>
         /// <response code="201">Evento criado com sucesso.</response>  
         /// <response code="400">Erro ao cadastrar evento.</response>  
+        /// <response code="406">Model inválido.</response>  
         [HttpPost]
         [Produces(MediaTypeNames.Application.Json)]
         [Consumes(MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(ResultViewModel<Evento>), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ResultViewModel<List<string>>),StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ResultViewModel<List<string>>),StatusCodes.Status406NotAcceptable)]
         [Route("v1/eventos/")]
         public ObjectResult Post([FromBody] EventoCadastroViewModel eventoTemp) {
+            if (eventoTemp == null) {
+                Response.StatusCode = StatusCodes.Status406NotAcceptable;
+                return ResponseUtils.GenerateObjectResult("Model inválido.", "Campo tipo inteiro");
+            }
             if (!_casaDeShowRepository.Existe(eventoTemp.CasaDeShowID)) {
                 ModelState.AddModelError("CasaDeShowId", "Casa de Show inexistente.");
             }
@@ -308,13 +314,19 @@ namespace Tickets_API.Controllers
         /// <returns>Edita evento.</returns>
         /// <response code="201">Evento editado com sucesso.</response>  
         /// <response code="400">Erro ao editar evento.</response>  
+        /// <response code="406">Model inválido.</response>  
         [HttpPut]
         [Produces(MediaTypeNames.Application.Json)]
         [Consumes(MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(ResultViewModel<Evento>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResultViewModel<List<string>>),StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ResultViewModel<List<string>>),StatusCodes.Status406NotAcceptable)]
         [Route("v1/eventos/{id}")]
         public ObjectResult Put(int id, [FromBody] EventoEdicaoViewModel eventoTemp) {
+            if (eventoTemp == null) {
+                Response.StatusCode = StatusCodes.Status406NotAcceptable;
+                return ResponseUtils.GenerateObjectResult("Model inválido.", "Campo tipo inteiro");
+            }
             if (id != eventoTemp.Id) {
                 ModelState.AddModelError("Id", "Id da requisição difere do Id da casa de show.");
             }
