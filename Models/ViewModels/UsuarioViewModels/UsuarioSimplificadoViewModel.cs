@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
 
 namespace Tickets_API.Models.ViewModels.UsuarioViewModels
 {
@@ -7,8 +8,10 @@ namespace Tickets_API.Models.ViewModels.UsuarioViewModels
         [Required]
         public int Id {get; set;}
         [Required(ErrorMessage="Este campo é obrigatório.")]
-        [StringLength(100, ErrorMessage="Limite de caracteres: 100.")]
-        [MinLength(5, ErrorMessage="Mínimo de caracteres: 5.")]
-        public string Nome {get; set;}
+        [MinLength(5, ErrorMessage="Favor entrar com endereço de e-mail válido.")]
+        public string Email {get; set;}
+        [IgnoreDataMember]
+        [Required(ErrorMessage="Este campo é obrigatório.")]
+        public string Senha {get; set;}
     }
 }

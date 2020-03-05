@@ -10,9 +10,7 @@ namespace Tickets_API.Models
         public Evento Evento {get; set;}
         public int EventoID {get; set;}
         public int QuantidadeTicket {get; set;}
-        public float TotalVenda {get {
-            return QuantidadeTicket * Evento.ValorUnitario;
-        }}
+        public float TotalVenda {get; set;}
         public DateTime DataVenda {get; set;}
     }
 }
