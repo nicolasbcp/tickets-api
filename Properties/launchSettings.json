@@ -21,7 +21,11 @@
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "weatherforecast",
+<<<<<<< Updated upstream
       "applicationUrl": "https://localhost:5001;http://localhost:5000",
+=======
+      "applicationUrl": "https://localhost:8080;http://localhost:80",
+>>>>>>> Stashed changes
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
