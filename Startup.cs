@@ -1,10 +1,12 @@
 using System;
 using System.IO;
+using System.Net;
 using System.Reflection;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -37,16 +39,22 @@ namespace Tickets_API
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(x => 
+            }).AddJwtBearer(x =>
             {
                 x.RequireHttpsMetadata = false;
                 x.SaveToken = true;
-                x.TokenValidationParameters = new TokenValidationParameters {
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = false,
                     ValidateAudience = false
                 };
+            });
+
+            services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.KnownProxies.Add(IPAddress.Parse("10.0.0.100"));
             });
 
             services.AddDbContext<ApplicationDbContext>
@@ -61,10 +69,14 @@ namespace Tickets_API
             services.AddResponseCompression();
 
             services.AddSwaggerGen
-            (c => {
+            (c =>
+            {
                 c.SwaggerDoc
-                ("v1", new OpenApiInfo {
-                    Version = "v1", Title = "GFT Tickets", Description = "API de Gerenciamento do GFT Tickets.",
+                ("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "GFT Tickets",
+                    Description = "API de Gerenciamento do GFT Tickets.",
                 });
 
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
@@ -90,7 +102,12 @@ namespace Tickets_API
                  .AllowAnyMethod()
                  .AllowAnyHeader());
 
-            app.UseAuthentication();     
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseResponseCompression();
